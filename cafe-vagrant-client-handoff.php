@@ -10,7 +10,7 @@
  */
 
 
-/* Initializing Plugin */
+/* Initializing Plugin, registering new role */
 
 register_activation_hook( __FILE__, 'initial_activation' );
 function initial_activation() {
@@ -67,3 +67,4 @@ function my_hide_system_pages( $query ) {
        )));
    }
 }
+
