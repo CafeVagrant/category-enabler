@@ -57,7 +57,6 @@ function ny_page_category() {
 
 add_action( 'pre_get_posts', 'my_hide_system_pages' );
 function my_hide_system_pages( $query ) {
-    $test = current_user_can( 'be_system_admin' );
    if( is_admin() && !empty( $_GET['post_type'] ) && $_GET['post_type'] == 'page' && $query->query['post_type'] == 'page' && !current_user_can( 'be_system_admin' ) ) {
        $query->set( 'tax_query', array(array(
            'taxonomy' => 'page_category',
@@ -72,11 +71,27 @@ function my_hide_system_pages( $query ) {
  * Remove unneccessary roles
  */
 
+add_action('init', 'removing_roles');
 
-if ( get_role('contributor')) {
-    remove_role ('contributor');
+function removing_roles() {
+  if (!current_user_can('be_system_admin')) {
+    if ( get_role('contributor')) {
+      remove_role ('contributor');
+    }
+
+    if ( get_role('subscriber')) {
+        remove_role ('subscriber');
+    }
+
+    if ( get_role('author')) {
+        remove_role ('author');
+    }
+  }
 }
 
-if ( get_role('subscriber')) {
-    remove_role ('subscriber');
+add_action('init', 'hide_admin_bar');
+function hide_admin_bar() {
+  if (!current_user_can('be_system_admin')) {
+      add_filter('show_admin_bar', '__return_false');
+  }
 }
