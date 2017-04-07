@@ -68,3 +68,15 @@ function my_hide_system_pages( $query ) {
    }
 }
 
+/**
+ * Remove unneccessary roles
+ */
+
+
+if ( get_role('contributor')) {
+    remove_role ('contributor');
+}
+
+if ( get_role('subscriber')) {
+    remove_role ('subscriber');
+}
